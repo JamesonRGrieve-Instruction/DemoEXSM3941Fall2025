@@ -8,17 +8,21 @@ class Program
         string userName;
         const string GREETING = "Hello, ";
         // Prompt for input without newline.
+        userName = GetInput("Please enter your name: ");
+        Console.WriteLine($"{GREETING}{userName}!");
+    }
+    static string GetInput(string prompt)
+    {
+        string toReturn;
         do
         {
-            Console.Write("Please enter your name: ");
-            userName = Console.ReadLine().Trim();
-            if (userName.Length == 0)
+            Console.Write(prompt);
+            toReturn = Console.ReadLine().Trim();
+            if (toReturn.Length == 0)
             {
                 Console.WriteLine("It doesn't look like you've given me a name!");
             }
-        } while (userName.Length == 0);
-        Console.WriteLine($"{GREETING}{userName}!");
-
-
+        } while (toReturn.Length == 0);
+        return toReturn;
     }
 }
