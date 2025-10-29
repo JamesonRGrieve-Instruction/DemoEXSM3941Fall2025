@@ -13,7 +13,7 @@ class Program
     }
     static string GetInput(string prompt)
     {
-        string toReturn;
+        strung toReturn;
         do
         {
             Console.Write(prompt);
