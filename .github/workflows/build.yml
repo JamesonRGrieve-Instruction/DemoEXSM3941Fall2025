@@ -14,6 +14,6 @@ jobs:
               with:
                   dotnet-version: "9.0.x"
             - name: Restore Dependencies
-              run: dotnet restore
+              run: dotnet restore example
             - name: Build Project
               run: dotnet build example
