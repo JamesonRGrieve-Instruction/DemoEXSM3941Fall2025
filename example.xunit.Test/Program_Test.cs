@@ -41,6 +41,17 @@ public class UnitTest1
         // Assert
         Assert.Equal(expected, result);
     }
+
+    [Theory]
+    [InlineData(-1)]
+    [InlineData(int.MinValue)]
+    [InlineData(101)]
+    [InlineData(int.MaxValue)]
+    public void CalculateGrade_ThrowsException(int score)
+    {
+        // Assert
+        Assert.Throws<ArgumentOutOfRangeException>(() => Program.CalculateGrade(score));
+    }
 }
 
 
