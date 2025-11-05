@@ -7,13 +7,12 @@ class Program
         Console.WriteLine("Hello, World!");
         string userName;
         const string GREETING = "Hello, ";
-        // Prompt for input without newline.
         userName = GetInput("Please enter your name: ");
         Console.WriteLine($"{GREETING}{userName}!");
     }
     static string GetInput(string prompt)
     {
-        strung toReturn;
+        string toReturn;
         do
         {
             Console.Write(prompt);
