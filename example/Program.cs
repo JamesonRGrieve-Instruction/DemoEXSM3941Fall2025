@@ -1,6 +1,6 @@
 ﻿namespace example;
 
-class Program
+public class Program
 {
     static void Main(string[] args)
     {
@@ -23,5 +23,10 @@ class Program
             }
         } while (toReturn.Length == 0);
         return toReturn;
+    }
+
+    static public bool IsPositiveInteger(int input)
+    {
+        return input > 0;
     }
 }
