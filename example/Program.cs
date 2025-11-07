@@ -1,44 +1,44 @@
-﻿namespace example;
+﻿using System.Reflection.PortableExecutable;
+
+namespace example;
 
 public class Program
 {
     static void Main(string[] args)
     {
-        Console.WriteLine("Hello, World!");
-        string userName;
-        const string GREETING = "Hello, ";
-        userName = GetInput("Please enter your name: ");
-        Console.WriteLine($"{GREETING}{userName}!");
     }
-    static string GetInput(string prompt)
+    public static void ValidateGrade(double grade)
     {
-        string toReturn;
-        do
+        if (grade < 0 || grade > 4)
         {
-            Console.Write(prompt);
-            toReturn = Console.ReadLine().Trim();
-            if (toReturn.Length == 0)
-            {
-                Console.WriteLine("It doesn't look like you've given me a name!");
-            }
-        } while (toReturn.Length == 0);
+            throw new ArgumentOutOfRangeException(nameof(grade));
+        }
+    }
+    public static char GetGradeLetter(double gpa)
+    {
+        ValidateGrade(gpa);
+        char toReturn = ' ';
+        if (gpa <= 4 && gpa >= 3.7)
+        {
+            toReturn = 'A';
+        }
+        else if (gpa <= 3.6 && gpa >= 2.7)
+        {
+            toReturn = 'B';
+        }
+        else if (gpa <= 2.6 && gpa >= 1.7)
+        {
+            toReturn = 'C';
+        }
+        else if (gpa <= 1.6 && gpa >= 1)
+        {
+            toReturn = 'D';
+        }
+        else
+        {
+            toReturn = 'F';
+        }
         return toReturn;
     }
 
-    static public bool IsPositiveInteger(int input)
-    {
-        return input > 0;
-    }
-
-    public static char CalculateGrade(int score)
-    {
-        if (score < 0 || score > 100)
-            throw new ArgumentOutOfRangeException(nameof(score), "Score must be between 0 and 100.");
-
-        if (score >= 90) return 'A';
-        if (score >= 80) return 'B';
-        if (score >= 70) return 'C';
-        if (score >= 60) return 'D';
-        return 'F';
-    }
 }
