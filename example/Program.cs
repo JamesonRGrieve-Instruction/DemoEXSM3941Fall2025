@@ -5,7 +5,7 @@ public class Program
     static void Main(string[] args)
     {
         List<string> names = new List<string>(); // Physical Size
-        List<int> ages = new List<int>(); // Parallel Array
+        List<DateOnly> birthdates = new List<DateOnly>(); // Parallel Array
         string input = "";
         do
         {
@@ -14,12 +14,12 @@ public class Program
             if (input != "exit")
             {
                 names.Add(input);
-                Console.Write($"Please Enter the Age of {input}: ");
-                ages.Add(int.Parse(Console.ReadLine().Trim()));
+                Console.Write($"Please Enter the Birth Date of {input} (YYYY-MM-DD): ");
+                birthdates.Add(DateOnly.Parse(Console.ReadLine().Trim()));
             }
             for (int i = 0; i < names.Count; i++)
             {
-                Console.WriteLine($"{i + 1}: {names[i]} is {ages[i]}");
+                Console.WriteLine($"{i + 1}: {names[i]} is {Math.Floor((DateOnly.FromDateTime(DateTime.Now).DayNumber - birthdates[i].DayNumber) / 365.25)}");
             }
         } while (input != "exit");
 
