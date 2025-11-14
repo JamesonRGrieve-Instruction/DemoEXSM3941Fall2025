@@ -4,41 +4,26 @@ public class Program
 {
     static void Main(string[] args)
     {
-        Console.WriteLine("Hello, World!");
-        string userName;
-        const string GREETING = "Hello, ";
-        userName = GetInput("Please enter your name: ");
-        Console.WriteLine($"{GREETING}{userName}!");
-    }
-    static string GetInput(string prompt)
-    {
-        string toReturn;
+        string[] names = new string[10]; // Physical Size
+        int[] ages = new int[10]; // Parallel Array
+        int logicalSize = 0;
+        string input = "";
         do
         {
-            Console.Write(prompt);
-            toReturn = Console.ReadLine().Trim();
-            if (toReturn.Length == 0)
+            Console.Write("Please Enter a Name or 'exit' to Exit: ");
+            input = Console.ReadLine().Trim();
+            if (input != "exit")
             {
-                Console.WriteLine("It doesn't look like you've given me a name!");
+                names[logicalSize] = input;
+                Console.Write($"Please Enter the Age of {input}: ");
+                ages[logicalSize] = int.Parse(Console.ReadLine().Trim());
+                logicalSize++;
             }
-        } while (toReturn.Length == 0);
-        return toReturn;
-    }
+            for (int i = 0; i < logicalSize; i++)
+            {
+                Console.WriteLine($"{i + 1}: {names[i]} is {ages[i]}");
+            }
+        } while (input != "exit");
 
-    static public bool IsPositiveInteger(int input)
-    {
-        return input > 0;
-    }
-
-    public static char CalculateGrade(int score)
-    {
-        if (score < 0 || score > 100)
-            throw new ArgumentOutOfRangeException(nameof(score), "Score must be between 0 and 100.");
-
-        if (score >= 90) return 'A';
-        if (score >= 80) return 'B';
-        if (score >= 70) return 'C';
-        if (score >= 60) return 'D';
-        return 'F';
     }
 }
