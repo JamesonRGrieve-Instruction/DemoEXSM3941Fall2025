@@ -4,9 +4,8 @@ public class Program
 {
     static void Main(string[] args)
     {
-        string[] names = new string[10]; // Physical Size
-        int[] ages = new int[10]; // Parallel Array
-        int logicalSize = 0;
+        List<string> names = new List<string>(); // Physical Size
+        List<int> ages = new List<int>(); // Parallel Array
         string input = "";
         do
         {
@@ -14,12 +13,11 @@ public class Program
             input = Console.ReadLine().Trim();
             if (input != "exit")
             {
-                names[logicalSize] = input;
+                names.Add(input);
                 Console.Write($"Please Enter the Age of {input}: ");
-                ages[logicalSize] = int.Parse(Console.ReadLine().Trim());
-                logicalSize++;
+                ages.Add(int.Parse(Console.ReadLine().Trim()));
             }
-            for (int i = 0; i < logicalSize; i++)
+            for (int i = 0; i < names.Count; i++)
             {
                 Console.WriteLine($"{i + 1}: {names[i]} is {ages[i]}");
             }
