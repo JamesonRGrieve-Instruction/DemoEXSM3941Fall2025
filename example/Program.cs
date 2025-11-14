@@ -1,27 +1,62 @@
-﻿namespace example;
+﻿using System.Reflection.PortableExecutable;
+
+namespace example;
 
 public class Program
 {
     static void Main(string[] args)
     {
-        List<string> names = new List<string>(); // Physical Size
-        List<DateOnly> birthdates = new List<DateOnly>(); // Parallel Array
-        string input = "";
+        Random random = new Random();
+        Console.Write("How high would you like to play to?: ");
+        int maxPlay = int.Parse(Console.ReadLine());
+        int target = random.Next(1, maxPlay + 1);
+        int guess = -1;
+        int guesses = 0;
         do
         {
-            Console.Write("Please Enter a Name or 'exit' to Exit: ");
-            input = Console.ReadLine().Trim();
-            if (input != "exit")
+            guess = GetRangedInput(1, maxPlay);
+            guesses++;
+            if (guess > target)
             {
-                names.Add(input);
-                Console.Write($"Please Enter the Birth Date of {input} (YYYY-MM-DD): ");
-                birthdates.Add(DateOnly.Parse(Console.ReadLine().Trim()));
+                Console.WriteLine("Lower!");
             }
-            for (int i = 0; i < names.Count; i++)
+            else if (guess < target)
             {
-                Console.WriteLine($"{i + 1}: {names[i]} is {Math.Floor((DateOnly.FromDateTime(DateTime.Now).DayNumber - birthdates[i].DayNumber) / 365.25)}");
+                Console.WriteLine("Higher!");
             }
-        } while (input != "exit");
+        } while (guess != target);
+        Console.WriteLine($"Congrats, You Guessed it in {guesses} Guesses!");
+    }
+    public static bool ValidateRangedInput(int min, int max, int value)
+    {
+        return (value >= min && value <= max);
 
     }
+    public static int GetRangedInput(int min, int max)
+    {
+        int input = 0;
+        Console.Write($"Enter a value between {min} and {max}: ");
+        try
+        {
+            input = int.Parse(Console.ReadLine());
+        }
+        catch
+        {
+
+        }
+        while (!ValidateRangedInput(min, max, input))
+        {
+            Console.Write($"Sorry, that's not quite right. Enter a value between {min} and {max}: ");
+            try
+            {
+                input = int.Parse(Console.ReadLine());
+            }
+            catch
+            {
+
+            }
+        }
+        return input;
+    }
+
 }
