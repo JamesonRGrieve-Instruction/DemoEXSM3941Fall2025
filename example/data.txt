@@ -1,5 +1,0 @@
-name,birthdate
-bob,5/5/1995
-joe,1/1/1990
-billy,1/1/1953
-tammy,7/7/1960

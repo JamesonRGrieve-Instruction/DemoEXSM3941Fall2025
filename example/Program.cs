@@ -6,60 +6,92 @@ public class Program
 {
     static void Main(string[] args)
     {
-        List<string> names = new List<string>(); // Physical Size
-        List<DateOnly> birthdates = new List<DateOnly>(); // Parallel Array
-        const string FILENAME = "data.txt", HEADER = "name,birthdate";
-        using (StreamReader reader = File.OpenText(FILENAME))
+        const int MAX_GUESSES = 6;
+        List<string> words = new List<string>(); // Physical Size
+        Random rng = new Random();
+        const string FILENAME = "words.txt";
+        try
         {
-            string line = null;
+            using (StreamReader reader = File.OpenText(FILENAME))
+            {
+                string line = null;
+                do
+                {
+                    line = reader.ReadLine();
+                    if (line != null)
+                    {
+                        words.Add(line);
+                    }
+                } while (line != null);
+            }
+        }
+        catch
+        {
+            Console.WriteLine("No words found! Error!");
+        }
+        if (words.Count > 0)
+        {
+            string target = words[rng.Next(words.Count)];
+            List<char> guesses = new List<char>();
+            bool exit = false;
             do
             {
-                line = reader.ReadLine();
-                if (line != null & line != HEADER)
+                Console.Write("Please Choose a Letter: ");
+                char guess = char.ToLower(char.Parse(Console.ReadLine().Trim()));
+                if (char.IsAsciiLetter(guess))
                 {
-                    string[] splitLine = line.Split(',');
-                    names.Add(splitLine[0]);
-                    birthdates.Add(DateOnly.Parse(splitLine[1]));
+                    if (!guesses.Contains(guess))
+                    {
+                        guesses.Add(guess);
+                    }
+                    else
+                    {
+                        Console.WriteLine("You already guessed that!");
+                    }
+                    if (!target.Contains(guess))
+                    {
+                        Console.WriteLine("Sorry, that isn't in the word.");
+                    }
+                    bool done = true;
+                    foreach (char letter in target)
+                    {
+                        if (guesses.Contains(letter))
+                        {
+                            Console.Write(letter + " ");
+                        }
+                        else
+                        {
+                            Console.Write("_ ");
+                            done = false;
+                        }
+                    }
+                    if (done)
+                    {
+                        exit = true;
+                    }
                 }
-            } while (line != null);
-        }
+                else
+                {
+                    Console.WriteLine("That's not a letter!");
+                }
 
-        string input = "";
-        do
-        {
-            Console.Write("Please Enter a Name or 'exit' to Exit: ");
-            input = Console.ReadLine().Trim();
-            if (input != "exit")
+            } while (!exit && guesses.Where(letter => !target.Contains(letter)).Count() < MAX_GUESSES);
+            if (exit)
             {
-                names.Add(input);
-                Console.Write($"Please Enter the Birth Date of {input} (YYYY-MM-DD): ");
-                birthdates.Add(DateOnly.Parse(Console.ReadLine().Trim()));
+                Console.WriteLine("\nYou win!");
             }
-            for (int i = 0; i < names.Count; i++)
+            else
             {
-                Console.WriteLine($"{i + 1}: {names[i]} is {Math.Floor((DateOnly.FromDateTime(DateTime.Now).DayNumber - birthdates[i].DayNumber) / 365.25)}");
+                Console.WriteLine("\nSorry, play again.");
             }
-        } while (input != "exit");
-        FileStream stream;
-        // try
-        // {
-        //     stream = new FileStream(FILENAME, FileMode.CreateNew);
-        //     using (StreamWriter writer = new StreamWriter(stream))
-        //     {
-        //         writer.WriteLine(HEADER);
-        //     }
-        // }
-        // catch
-        // {
-        //     stream = new FileStream(FILENAME, FileMode.Append);
-        // }
-        using (StreamWriter writer = new StreamWriter(new FileStream(FILENAME, FileMode.Create)))
-        {
-            writer.WriteLine(HEADER);
-            for (int i = 0; i < names.Count; i++)
+            using (StreamWriter writer = new StreamWriter(new FileStream("record.txt", FileMode.Create)))
             {
-                writer.WriteLine($"{names[i]},{birthdates[i]}");
+                writer.WriteLine($"Word: {target}");
+                writer.WriteLine($"Won?: {exit}");
+                writer.WriteLine($"Guesses: {guesses.Count}");
+                writer.WriteLine($"Played At: {DateTime.Now}");
             }
+
         }
     }
 }
