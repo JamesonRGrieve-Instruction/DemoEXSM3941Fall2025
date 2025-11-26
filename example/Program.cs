@@ -56,5 +56,27 @@ public class Program
         {
             Console.WriteLine(theStack.Pop());
         }
+
+        Dictionary<string, string> theDictionary = new Dictionary<string, string>();
+        foreach (string name in theHashSet)
+        {
+            theDictionary.Add(name, "LastNameHere");
+        }
+        Console.WriteLine("--- Dictionary ---");
+        foreach (KeyValuePair<string, string> kvp in theDictionary)
+        {
+            Console.WriteLine($"{kvp.Key} {kvp.Value}");
+        }
+
+        SortedList<string, string> theSortedList = new SortedList<string, string>();
+        foreach (string name in theHashSet)
+        {
+            theSortedList.Add(name, "LastNameHere");
+        }
+        Console.WriteLine("--- SortedList ---");
+        foreach (KeyValuePair<string, string> kvp in theSortedList)
+        {
+            Console.WriteLine($"{kvp.Key} {kvp.Value}");
+        }
     }
 }
