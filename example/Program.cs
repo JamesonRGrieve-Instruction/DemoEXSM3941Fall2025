@@ -6,77 +6,80 @@ public class Program
 {
     static void Main(string[] args)
     {
-        string[] names = new string[] { "Joe", "John", "Jane", "John", "Joe" };
+        List<string> names = new List<string>
+        {
+            "Liam", "Olivia", "Noah", "Emma", "Oliver",
+            "Ava", "Elijah", "Charlotte", "James", "Sophia",
+            "William", "Amelia", "Benjamin", "Isabella", "Lucas",
+            "Mia", "Henry", "Evelyn", "Theodore", "Harper",
+            "Jackson", "Luna", "Samuel", "Aurora", "Sebastian"
+        };
 
+        // --- Where ---
 
-        // Automatically filter out duplicates.
-        HashSet<string> theHashSet = new HashSet<string>();
-
+        List<string> filteredNames = new List<string>();
         foreach (string name in names)
         {
-            theHashSet.Add(name);
+            if (name[0] == 'S')
+            {
+                filteredNames.Add(name);
+            }
         }
-        Console.WriteLine("--- HashSet ---");
-        foreach (string name in theHashSet)
+        foreach (string name in filteredNames)
         {
-            Console.WriteLine(name);
+            Console.Write(name + " ");
         }
+        Console.WriteLine();
 
-        // Automatically filter out duplicates and sort.
-        SortedSet<string> theSortedSet = new SortedSet<string>();
 
-        foreach (string name in names)
+        filteredNames.Clear();
+        foreach (string name in names.Where((name) => name[0] == 'S'))
         {
-            theSortedSet.Add(name);
+            filteredNames.Add(name);
         }
-        Console.WriteLine("--- SortedSet ---");
-        foreach (string name in theSortedSet)
+        foreach (string name in filteredNames)
         {
-            Console.WriteLine(name);
+            Console.Write(name + " ");
         }
+        Console.WriteLine();
 
-        Queue<string> theQueue = new Queue<string>();
-        foreach (string name in theSortedSet)
+        filteredNames.Clear();
+        filteredNames = names.Where((name) => name[0] == 'S').ToList();
+        foreach (string name in filteredNames)
         {
-            theQueue.Enqueue(name);
+            Console.Write(name + " ");
         }
-        Console.WriteLine("--- Queue ---");
-        while (theQueue.Count > 0)
-        {
-            Console.WriteLine(theQueue.Dequeue());
-        }
+        Console.WriteLine();
 
-        Stack<string> theStack = new Stack<string>();
-        foreach (string name in theSortedSet)
-        {
-            theStack.Push(name);
-        }
-        Console.WriteLine("--- Stack ---");
-        while (theStack.Count > 0)
-        {
-            Console.WriteLine(theStack.Pop());
-        }
+        // --- Select ---
 
-        Dictionary<string, string> theDictionary = new Dictionary<string, string>();
-        foreach (string name in theHashSet)
+        List<char> lastCharacters = filteredNames.Select(name => name[name.Length - 1]).ToList();
+        foreach (char letter in lastCharacters)
         {
-            theDictionary.Add(name, "LastNameHere");
+            Console.Write(letter + " ");
         }
-        Console.WriteLine("--- Dictionary ---");
-        foreach (KeyValuePair<string, string> kvp in theDictionary)
-        {
-            Console.WriteLine($"{kvp.Key} {kvp.Value}");
-        }
+        Console.WriteLine();
 
-        SortedList<string, string> theSortedList = new SortedList<string, string>();
-        foreach (string name in theHashSet)
+        // --- OrderBy ---
+
+        filteredNames = names.Where((name) => name[0] == 'S').OrderBy(name => name).ToList();
+        foreach (string name in filteredNames)
         {
-            theSortedList.Add(name, "LastNameHere");
+            Console.Write(name + " ");
         }
-        Console.WriteLine("--- SortedList ---");
-        foreach (KeyValuePair<string, string> kvp in theSortedList)
-        {
-            Console.WriteLine($"{kvp.Key} {kvp.Value}");
-        }
+        Console.WriteLine();
+
+        // --- Any / All ---
+
+        Console.WriteLine(names.All(name => name.ToLower().Contains('s')));
+        Console.WriteLine(filteredNames.All(name => name.ToLower().Contains('s')));
+
+
+        Console.WriteLine(names.Any(name => name.ToLower().Contains('s')));
+        Console.WriteLine(filteredNames.Any(name => name.ToLower().Contains('s')));
+
+        // --- Count ---
+        Console.WriteLine(names.Count);
+        Console.WriteLine(names.Count((name) => name[0] == 'S'));
     }
 }
