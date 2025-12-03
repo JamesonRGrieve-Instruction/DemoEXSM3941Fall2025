@@ -52,8 +52,13 @@ public class Program
         Console.WriteLine();
 
         // --- Select ---
+        List<char> lastCharacters = new List<char>();
+        foreach (string name in filteredNames)
+        {
+            lastCharacters.Add(name[name.Length - 1]);
+        }
 
-        List<char> lastCharacters = filteredNames.Select(name => name[name.Length - 1]).ToList();
+        lastCharacters = filteredNames.Select(name => name[name.Length - 1]).ToList();
         foreach (char letter in lastCharacters)
         {
             Console.Write(letter + " ");
