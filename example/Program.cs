@@ -14,77 +14,68 @@ public class Program
             "Mia", "Henry", "Evelyn", "Theodore", "Harper",
             "Jackson", "Luna", "Samuel", "Aurora", "Sebastian"
         };
-
-        // --- Where ---
-
-        List<string> filteredNames = new List<string>();
-        foreach (string name in names)
+        Dictionary<string, string> wordPool = new Dictionary<string, string>
         {
-            if (name[0] == 'S')
+            { "Ephemeral", "Lasting for a very short time." },
+            { "Ubiquitous", "Present, appearing, or found everywhere." },
+            { "Serendipity", "The occurrence and development of events by chance in a happy or beneficial way." },
+            { "Mellifluous", "Sweet or musical; pleasant to hear." },
+            { "Quixotic", "Extremely idealistic; unrealistic and impractical." },
+            { "Ineffable", "Too great or extreme to be expressed or described in words." },
+            { "Nefarious", "Wicked, villainous, or criminal." },
+            { "Paradigm", "A typical example or pattern of something; a model." },
+            { "Cacophony", "A harsh, discordant mixture of sounds." },
+            { "Panacea", "A solution or remedy for all difficulties or diseases." },
+            { "Luminous", "Shining or glowing, especially in the dark." },
+            { "Resilience", "The capacity to recover quickly from difficulties; toughness." },
+            { "Sycophant", "A person who acts obsequiously toward someone important in order to gain advantage." },
+            { "Talisman", "An object typically an inscribed ring or stone, that is thought to have magic powers." }
+        };
+
+        Random rng = new Random();
+
+        Queue<string> nameQueue = new Queue<string>();
+        Queue<Stack<Dictionary<string, string>>> queue = new Queue<Stack<Dictionary<string, string>>>();
+
+        for (int personNum = 1; personNum <= rng.Next(3, 6); personNum++)
+        {
+            Stack<Dictionary<string, string>> newStack = new Stack<Dictionary<string, string>>();
+            for (int dictNum = 1; dictNum <= rng.Next(2, 5); dictNum++)
             {
-                filteredNames.Add(name);
+                Dictionary<string, string> newDictionary = new Dictionary<string, string>();
+                for (int wordNum = 1; wordNum <= rng.Next(5, 11); wordNum++)
+                {
+                    KeyValuePair<string, string> wordToAdd;
+                    do
+                    {
+                        wordToAdd = wordPool.ElementAt(rng.Next(wordPool.Count));
+                    } while (newDictionary.ContainsKey(wordToAdd.Key));
+                    newDictionary.Add(wordToAdd.Key, wordToAdd.Value);
+                }
+                newStack.Push(newDictionary);
             }
+            queue.Enqueue(newStack);
+            nameQueue.Enqueue(names[rng.Next(names.Count)]);
         }
-        foreach (string name in filteredNames)
+
+        Console.WriteLine($"A queue of {nameQueue.Count} people form in front of the desk, {string.Join(", ", nameQueue)}.");
+        do
         {
-            Console.Write(name + " ");
-        }
-        Console.WriteLine();
+            string name = nameQueue.Dequeue();
+            Stack<Dictionary<string, string>> stack = queue.Dequeue();
+            Console.WriteLine($"\n{name} steps up to the desk with a stack of {stack.Count} dictionaries.");
+            int dictCount = 1;
+            do
+            {
+                Console.WriteLine($"{name} places dictionary {dictCount} on the desk, containing these word(s):");
+                foreach (KeyValuePair<string, string> entry in stack.Pop())
+                {
+                    Console.WriteLine($"{entry.Key}: {entry.Value}");
+                }
+                dictCount++;
+            } while (stack.Count > 0);
+        } while (queue.Count > 0);
 
 
-        filteredNames.Clear();
-        foreach (string name in names.Where((name) => name[0] == 'S'))
-        {
-            filteredNames.Add(name);
-        }
-        foreach (string name in filteredNames)
-        {
-            Console.Write(name + " ");
-        }
-        Console.WriteLine();
-
-        filteredNames.Clear();
-        filteredNames = names.Where((name) => name[0] == 'S').ToList();
-        foreach (string name in filteredNames)
-        {
-            Console.Write(name + " ");
-        }
-        Console.WriteLine();
-
-        // --- Select ---
-        List<char> lastCharacters = new List<char>();
-        foreach (string name in filteredNames)
-        {
-            lastCharacters.Add(name[name.Length - 1]);
-        }
-
-        lastCharacters = filteredNames.Select(name => name[name.Length - 1]).ToList();
-        foreach (char letter in lastCharacters)
-        {
-            Console.Write(letter + " ");
-        }
-        Console.WriteLine();
-
-        // --- OrderBy ---
-
-        filteredNames = names.Where((name) => name[0] == 'S').OrderBy(name => name).ToList();
-        foreach (string name in filteredNames)
-        {
-            Console.Write(name + " ");
-        }
-        Console.WriteLine();
-
-        // --- Any / All ---
-
-        Console.WriteLine(names.All(name => name.ToLower().Contains('s')));
-        Console.WriteLine(filteredNames.All(name => name.ToLower().Contains('s')));
-
-
-        Console.WriteLine(names.Any(name => name.ToLower().Contains('s')));
-        Console.WriteLine(filteredNames.Any(name => name.ToLower().Contains('s')));
-
-        // --- Count ---
-        Console.WriteLine(names.Count);
-        Console.WriteLine(names.Count((name) => name[0] == 'S'));
     }
 }
